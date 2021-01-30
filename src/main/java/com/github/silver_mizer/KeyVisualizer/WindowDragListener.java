@@ -5,13 +5,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import javax.swing.JWindow;
-
 public class WindowDragListener implements MouseListener, MouseMotionListener{
-	private JWindow window;
+	private KeyVisualizer window;
 	private int clickX, clickY;
 	
-	public WindowDragListener(JWindow window) {
+	public WindowDragListener(KeyVisualizer window) {
 		this.window = window;
 	}
 
@@ -30,10 +28,14 @@ public class WindowDragListener implements MouseListener, MouseMotionListener{
 	public void mouseReleased(MouseEvent event) {}
 	
 	@Override
-	public void mouseEntered(MouseEvent event) {}
+	public void mouseEntered(MouseEvent event) {
+		window.setMouseEntered(true);
+	}
 	
 	@Override
-	public void mouseExited(MouseEvent event) {}
+	public void mouseExited(MouseEvent event) {
+		window.setMouseEntered(false);
+	}
 	
 	@Override
 	public void mouseMoved(MouseEvent event) {}

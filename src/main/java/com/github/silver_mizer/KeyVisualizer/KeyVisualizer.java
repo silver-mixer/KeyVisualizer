@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import javax.swing.JPanel;
 import javax.swing.JWindow;
 
 import org.jnativehook.GlobalScreen;
@@ -19,7 +20,69 @@ import org.jnativehook.mouse.NativeMouseMotionListener;
 
 public class KeyVisualizer extends JWindow implements NativeKeyListener, NativeMouseListener, NativeMouseMotionListener{
 	private static final long serialVersionUID = 1L;
+	private JPanel renderPanel;
 	private List<Integer> pressedKeys = new ArrayList<Integer>();
+	private boolean isMouseEntered = false;
+	
+	public static void main(String[] args) {
+		LogManager.getLogManager().reset();
+		Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+		logger.setLevel(Level.OFF);
+		try {
+			if(!GlobalScreen.isNativeHookRegistered()) {
+				GlobalScreen.registerNativeHook();
+			}
+		}catch(NativeHookException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				try {
+					if(GlobalScreen.isNativeHookRegistered()) {
+						GlobalScreen.unregisterNativeHook();
+					}
+				}catch(NativeHookException e) {
+					e.printStackTrace();
+					System.exit(1);
+				}
+			}
+		});
+		
+		KeyVisualizer window = new KeyVisualizer();
+		GlobalScreen.addNativeKeyListener(window);
+		GlobalScreen.addNativeMouseListener(window);
+		GlobalScreen.addNativeMouseMotionListener(window);
+		window.setVisible(true);
+		window.setLocation(0, 0);
+	}
+
+	public KeyVisualizer() {
+		setAlwaysOnTop(true);
+		setBackground(new Color(255, 255, 255, 0));
+		setLayout(null);
+		setBounds(1, 1, 640, 480);
+		
+		WindowDragListener windowDragListener = new WindowDragListener(this);
+		addMouseListener(windowDragListener);
+		addMouseMotionListener(windowDragListener);
+		
+		renderPanel = new RenderPanel(this);
+		renderPanel.setBounds(0, 0, 640, 480);
+		add(renderPanel);
+	}
+	
+	public boolean isMouseEntered() {
+		return isMouseEntered;
+	}
+	
+	public void setMouseEntered(boolean entered) {
+		isMouseEntered = entered;
+		System.out.println((entered ? "enter" : "exit"));
+		renderPanel.repaint();
+	}
 
 	@Override
 	public void nativeKeyPressed(NativeKeyEvent event) {
@@ -60,51 +123,5 @@ public class KeyVisualizer extends JWindow implements NativeKeyListener, NativeM
 	
 	@Override
 	public void nativeMouseMoved(NativeMouseEvent event) {
-	}
-	
-	public KeyVisualizer() {
-		setAlwaysOnTop(true);
-		setBackground(new Color(255, 255, 255, 128));
-		setLayout(null);
-		setBounds(1, 1, 640, 480);
-		
-		WindowDragListener windowDragListener = new WindowDragListener(this);
-		addMouseListener(windowDragListener);
-		addMouseMotionListener(windowDragListener);
-	}
-	
-	public static void main(String[] args) {
-		LogManager.getLogManager().reset();
-		Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-		logger.setLevel(Level.OFF);
-		try {
-			if(!GlobalScreen.isNativeHookRegistered()) {
-				GlobalScreen.registerNativeHook();
-			}
-		}catch(NativeHookException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			@Override
-			public void run() {
-				try {
-					if(GlobalScreen.isNativeHookRegistered()) {
-						GlobalScreen.unregisterNativeHook();
-					}
-				}catch(NativeHookException e) {
-					e.printStackTrace();
-					System.exit(1);
-				}
-			}
-		});
-		
-		KeyVisualizer window = new KeyVisualizer();
-		GlobalScreen.addNativeKeyListener(window);
-		GlobalScreen.addNativeMouseListener(window);
-		GlobalScreen.addNativeMouseMotionListener(window);
-		window.setVisible(true);
-		window.setLocation(0, 0);
 	}
 }
