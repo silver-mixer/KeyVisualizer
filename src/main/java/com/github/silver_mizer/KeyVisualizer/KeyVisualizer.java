@@ -1,14 +1,13 @@
 package com.github.silver_mizer.KeyVisualizer;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import javax.swing.JFrame;
+import javax.swing.JWindow;
 
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -18,7 +17,7 @@ import org.jnativehook.mouse.NativeMouseEvent;
 import org.jnativehook.mouse.NativeMouseListener;
 import org.jnativehook.mouse.NativeMouseMotionListener;
 
-public class KeyVisualizer extends JFrame implements NativeKeyListener, NativeMouseListener, NativeMouseMotionListener{
+public class KeyVisualizer extends JWindow implements NativeKeyListener, NativeMouseListener, NativeMouseMotionListener{
 	private static final long serialVersionUID = 1L;
 	private List<Integer> pressedKeys = new ArrayList<Integer>();
 
@@ -64,13 +63,14 @@ public class KeyVisualizer extends JFrame implements NativeKeyListener, NativeMo
 	}
 	
 	public KeyVisualizer() {
-		setTitle("KeyVisualizer");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setAlwaysOnTop(true);
 		setBackground(new Color(255, 255, 255, 128));
 		setLayout(null);
-		getContentPane().setPreferredSize(new Dimension(640, 480));
-		pack();
+		setBounds(1, 1, 640, 480);
+		
+		WindowDragListener windowDragListener = new WindowDragListener(this);
+		addMouseListener(windowDragListener);
+		addMouseMotionListener(windowDragListener);
 	}
 	
 	public static void main(String[] args) {
@@ -100,11 +100,11 @@ public class KeyVisualizer extends JFrame implements NativeKeyListener, NativeMo
 			}
 		});
 		
-		JFrame.setDefaultLookAndFeelDecorated(true);
-		KeyVisualizer frame = new KeyVisualizer();
-		GlobalScreen.addNativeKeyListener(frame);
-		GlobalScreen.addNativeMouseListener(frame);
-		GlobalScreen.addNativeMouseMotionListener(frame);
-		frame.setVisible(true);
+		KeyVisualizer window = new KeyVisualizer();
+		GlobalScreen.addNativeKeyListener(window);
+		GlobalScreen.addNativeMouseListener(window);
+		GlobalScreen.addNativeMouseMotionListener(window);
+		window.setVisible(true);
+		window.setLocation(0, 0);
 	}
 }
