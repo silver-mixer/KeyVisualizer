@@ -29,6 +29,5 @@ public class RenderPanel extends JPanel{
 			g2d.setColor(Color.BLACK);
 			g2d.drawRect(1, 1, getWidth() - 2, getHeight() -2);
 		}
-		System.out.println("paintComponent");
 	}
 }

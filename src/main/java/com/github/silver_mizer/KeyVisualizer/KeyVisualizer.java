@@ -80,7 +80,6 @@ public class KeyVisualizer extends JWindow implements NativeKeyListener, NativeM
 	
 	public void setMouseEntered(boolean entered) {
 		isMouseEntered = entered;
-		System.out.println((entered ? "enter" : "exit"));
 		renderPanel.repaint();
 	}
 
