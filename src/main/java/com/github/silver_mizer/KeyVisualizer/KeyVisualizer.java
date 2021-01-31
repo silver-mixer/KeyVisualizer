@@ -1,27 +1,18 @@
 package com.github.silver_mizer.KeyVisualizer;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import javax.swing.JPanel;
 import javax.swing.JWindow;
 
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
-import org.jnativehook.keyboard.NativeKeyEvent;
-import org.jnativehook.keyboard.NativeKeyListener;
-import org.jnativehook.mouse.NativeMouseEvent;
-import org.jnativehook.mouse.NativeMouseListener;
-import org.jnativehook.mouse.NativeMouseMotionListener;
 
-public class KeyVisualizer extends JWindow implements NativeKeyListener, NativeMouseListener, NativeMouseMotionListener{
+public class KeyVisualizer extends JWindow{
 	private static final long serialVersionUID = 1L;
-	private JPanel renderPanel;
-	private List<Integer> pressedKeys = new ArrayList<Integer>();
+	private RenderPanel renderPanel;
 	private boolean isMouseEntered = false;
 	
 	public static void main(String[] args) {
@@ -51,10 +42,10 @@ public class KeyVisualizer extends JWindow implements NativeKeyListener, NativeM
 			}
 		});
 		
+		GlobalScreen.addNativeKeyListener(NativeInputListener.getInstance());
+		GlobalScreen.addNativeMouseListener(NativeInputListener.getInstance());
+		GlobalScreen.addNativeMouseMotionListener(NativeInputListener.getInstance());
 		KeyVisualizer window = new KeyVisualizer();
-		GlobalScreen.addNativeKeyListener(window);
-		GlobalScreen.addNativeMouseListener(window);
-		GlobalScreen.addNativeMouseMotionListener(window);
 		window.setVisible(true);
 		window.setLocation(0, 0);
 	}
@@ -71,6 +62,7 @@ public class KeyVisualizer extends JWindow implements NativeKeyListener, NativeM
 		
 		renderPanel = new RenderPanel(this);
 		renderPanel.setBounds(0, 0, 640, 480);
+		NativeInputListener.addListener(renderPanel);
 		add(renderPanel);
 	}
 	
@@ -82,45 +74,8 @@ public class KeyVisualizer extends JWindow implements NativeKeyListener, NativeM
 		isMouseEntered = entered;
 		renderPanel.repaint();
 	}
-
-	@Override
-	public void nativeKeyPressed(NativeKeyEvent event) {
-		int id = (event.getKeyCode() != 0 ? event.getKeyCode() : event.getRawCode());
-		if(!pressedKeys.contains(id)) {
-			pressedKeys.add(id);
-			System.out.println("<" + (event.getKeyLocation()) + ">" + event.getKeyCode() + "/" + event.getRawCode() + "/" + NativeKeyEvent.getKeyText(event.getKeyCode()));
-		}
-	}
 	
-	@Override
-	public void nativeKeyTyped(NativeKeyEvent event) {}
-	
-	@Override
-	public void nativeKeyReleased(NativeKeyEvent event) {
-		int id = (event.getKeyCode() != 0 ? event.getKeyCode() : event.getRawCode());
-		pressedKeys.remove(Integer.valueOf(id));
-	}
-	
-	@Override
-	public void nativeMousePressed(NativeMouseEvent event) {
-		
-	}
-	
-	@Override
-	public void nativeMouseClicked(NativeMouseEvent event) {
-		
-	}
-	
-	@Override
-	public void nativeMouseReleased(NativeMouseEvent event) {
-		
-	}
-	
-	@Override
-	public void nativeMouseDragged(NativeMouseEvent event) {
-	}
-	
-	@Override
-	public void nativeMouseMoved(NativeMouseEvent event) {
+	public void render() {
+		renderPanel.repaint();
 	}
 }
