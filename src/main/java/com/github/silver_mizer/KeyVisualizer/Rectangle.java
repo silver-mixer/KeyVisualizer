@@ -4,13 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
-import org.jnativehook.keyboard.NativeKeyEvent;
-
 public class Rectangle extends Shape{
 	private int startx, starty, width, height;
-	private Font font = new Font(null, Font.PLAIN, 24);
 	
-	public Rectangle(String text, int startx, int starty, int width, int height, Color fillColor, Color activeColor) {
+	public Rectangle(String text, int startx, int starty, int width, int height, Color fillColor, Color activeColor, int keyCode) {
+		font = new Font(null, Font.PLAIN, 24);
 		this.text = text;
 		this.startx = startx;
 		this.starty = starty;
@@ -18,11 +16,12 @@ public class Rectangle extends Shape{
 		this.height = height;
 		this.fillColor = fillColor;
 		this.activeColor = activeColor;
+		this.keyCode = keyCode;
 	}
 
 	@Override
 	public void drawShape(Graphics2D g2d) {
-		if(NativeInputListener.isPressedKey(NativeKeyEvent.VC_A)) {
+		if(NativeInputListener.isPressedKey(keyCode)) {
 			g2d.setColor(activeColor);
 		}else {
 			g2d.setColor(fillColor);
