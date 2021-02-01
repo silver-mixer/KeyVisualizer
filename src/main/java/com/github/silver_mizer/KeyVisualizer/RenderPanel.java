@@ -19,9 +19,9 @@ public class RenderPanel extends JPanel implements NativeInputListenerInterface{
 	
 	public RenderPanel(KeyVisualizer window) {
 		this.window = window;
-		shapes.add(new Rectangle("A", 10, 10, 50, 50, Color.WHITE, Color.RED, NativeKeyEvent.VC_A));
-		shapes.add(new Circle("B", 95, 35, 25, Color.WHITE, Color.RED, NativeKeyEvent.VC_B));
-		shapes.add(new Polygon("Space", new int[] {10, 110, 110, 10}, new int[] {70, 70, 120, 120}, Color.WHITE, Color.RED, NativeKeyEvent.VC_SPACE));
+		shapes.add(new Rectangle("A", 10, 10, 50, 50, Color.WHITE, Color.RED, NativeKeyEvent.VC_A, 1, 14));
+		shapes.add(new Circle("B", 95, 35, 25, Color.WHITE, Color.RED, NativeKeyEvent.VC_B, 1, 14));
+		shapes.add(new Polygon("Space", new int[] {10, 110, 110, 10}, new int[] {70, 70, 120, 120}, Color.WHITE, Color.RED, NativeKeyEvent.VC_SPACE, 1, 14));
 	}
 
 	@Override

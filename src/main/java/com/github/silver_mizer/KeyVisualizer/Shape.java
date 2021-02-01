@@ -8,7 +8,7 @@ public class Shape{
 	protected String text;
 	protected Color fillColor, activeColor;
 	protected Font font;
-	protected int keyCode;
+	protected int keyCode, lineWidth;
 	
 	public void drawShape(Graphics2D g2d) {}
 }

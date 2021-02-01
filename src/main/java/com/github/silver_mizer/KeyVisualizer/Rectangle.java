@@ -1,5 +1,6 @@
 package com.github.silver_mizer.KeyVisualizer;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -7,8 +8,8 @@ import java.awt.Graphics2D;
 public class Rectangle extends Shape{
 	private int startx, starty, width, height;
 	
-	public Rectangle(String text, int startx, int starty, int width, int height, Color fillColor, Color activeColor, int keyCode) {
-		font = new Font(null, Font.PLAIN, 24);
+	public Rectangle(String text, int startx, int starty, int width, int height, Color fillColor, Color activeColor, int keyCode, int lineWidth, int fontSize) {
+		font = new Font(null, Font.PLAIN, fontSize);
 		this.text = text;
 		this.startx = startx;
 		this.starty = starty;
@@ -17,6 +18,7 @@ public class Rectangle extends Shape{
 		this.fillColor = fillColor;
 		this.activeColor = activeColor;
 		this.keyCode = keyCode;
+		this.lineWidth = lineWidth;
 	}
 
 	@Override
@@ -26,6 +28,7 @@ public class Rectangle extends Shape{
 		}else {
 			g2d.setColor(fillColor);
 		}
+		g2d.setStroke(new BasicStroke(lineWidth));
 		g2d.fillRect(startx, starty, width, height);
 		g2d.setColor(Color.BLACK);
 		g2d.drawRect(startx, starty, width, height);
