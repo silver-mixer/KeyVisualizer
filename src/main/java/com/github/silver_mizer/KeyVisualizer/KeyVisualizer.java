@@ -1,6 +1,7 @@
 package com.github.silver_mizer.KeyVisualizer;
 
 import java.awt.Color;
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -60,8 +61,13 @@ public class KeyVisualizer extends JWindow{
 		addMouseListener(windowDragListener);
 		addMouseMotionListener(windowDragListener);
 		
+		KeyVisualizerConfig config = new KeyVisualizerConfig();
+		config.load(new File(KeyVisualizer.class.getResource("assets/Test.kvc").getFile()));
+		setBounds(1, 1, config.getWidth(), config.getHeight());
+		
 		renderPanel = new RenderPanel(this);
-		renderPanel.setBounds(0, 0, 640, 480);
+		renderPanel.setBounds(0, 0, config.getWidth(), config.getHeight());
+		renderPanel.setShapes(config.getShapes());
 		NativeInputListener.addListener(renderPanel);
 		add(renderPanel);
 	}

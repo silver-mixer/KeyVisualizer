@@ -5,23 +5,17 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
 
-import org.jnativehook.keyboard.NativeKeyEvent;
-
 public class RenderPanel extends JPanel implements NativeInputListenerInterface{
 	private static final long serialVersionUID = 1L;
 	private KeyVisualizer window;
-	private List<Shape> shapes = new ArrayList<Shape>();
+	private List<Shape> shapes = null;
 	
 	public RenderPanel(KeyVisualizer window) {
 		this.window = window;
-		shapes.add(new Rectangle("A", 10, 10, 50, 50, Color.WHITE, Color.RED, NativeKeyEvent.VC_A, 1, 14));
-		shapes.add(new Circle("B", 95, 35, 25, Color.WHITE, Color.RED, NativeKeyEvent.VC_B, 1, 14));
-		shapes.add(new Polygon("Space", new int[] {10, 110, 110, 10}, new int[] {70, 70, 120, 120}, Color.WHITE, Color.RED, NativeKeyEvent.VC_SPACE, 1, 14));
 	}
 
 	@Override
@@ -48,5 +42,9 @@ public class RenderPanel extends JPanel implements NativeInputListenerInterface{
 	@Override
 	public void changeKeyState() {
 		repaint();
+	}
+	
+	public void setShapes(List<Shape> shapes) {
+		this.shapes = shapes;
 	}
 }
