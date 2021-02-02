@@ -40,9 +40,9 @@ public class NativeInputListener implements NativeKeyListener, NativeMouseListen
 		if(!pressedKeys.contains(id)) {
 			pressedKeys.add(id);
 			System.out.println("<" + (event.getKeyLocation()) + ">" + event.getKeyCode() + "/" + event.getRawCode() + "/" + NativeKeyEvent.getKeyText(event.getKeyCode()));
-		}
-		for(NativeInputListenerInterface listener: eventListeners.getListeners(NativeInputListenerInterface.class)) {
-			((NativeInputListenerInterface)listener).changeKeyState();
+			for(NativeInputListenerInterface listener: eventListeners.getListeners(NativeInputListenerInterface.class)) {
+				((NativeInputListenerInterface)listener).changeKeyState();
+			}
 		}
 	}
 	
