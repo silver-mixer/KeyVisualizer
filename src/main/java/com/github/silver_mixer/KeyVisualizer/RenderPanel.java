@@ -1,4 +1,4 @@
-package com.github.silver_mizer.KeyVisualizer;
+package com.github.silver_mixer.KeyVisualizer;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -41,7 +41,7 @@ public class RenderPanel extends JPanel implements NativeInputListenerInterface{
 	
 	@Override
 	public void changeKeyState() {
-		repaint();
+		window.render();
 	}
 	
 	public void setShapes(List<Shape> shapes) {
