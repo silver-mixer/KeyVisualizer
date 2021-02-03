@@ -1,4 +1,4 @@
-package com.github.silver_mizer.KeyVisualizer;
+package com.github.silver_mixer.KeyVisualizer;
 
 import java.util.ArrayList;
 import java.util.List;
