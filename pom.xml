@@ -4,6 +4,10 @@
   <artifactId>key-visualizer</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>KeyVisualizer</name>
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
   <dependencies>
   	<dependency>
   		<groupId>com.1stleg</groupId>
@@ -11,4 +15,33 @@
   		<version>2.1.0</version>
   	</dependency>
   </dependencies>
+  <build>
+  	<plugins>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-assembly-plugin</artifactId>
+  			<version>3.3.0</version>
+  			<configuration>
+  				<finalName>KeyVisualizer</finalName>
+  				<descriptorRefs>
+  					<descriptorRef>jar-with-dependencies</descriptorRef>
+  				</descriptorRefs>
+  				<archive>
+  					<manifest>
+  						<mainClass>com.github.silver_mixer.KeyVisualizer.KeyVisualizer</mainClass>
+  					</manifest>
+  				</archive>
+  			</configuration>
+  			<executions>
+  				<execution>
+  					<id>make-assembly</id>
+  					<phase>package</phase>
+  					<goals>
+  						<goal>single</goal>
+  					</goals>
+  				</execution>
+  			</executions>
+  		</plugin>
+  	</plugins>
+  </build>
 </project>
