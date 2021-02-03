@@ -1,7 +1,6 @@
 package com.github.silver_mixer.KeyVisualizer;
 
 import java.awt.Color;
-import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -62,7 +61,7 @@ public class KeyVisualizer extends JWindow{
 		addMouseMotionListener(windowDragListener);
 		
 		KeyVisualizerConfig config = new KeyVisualizerConfig();
-		config.load(new File(KeyVisualizer.class.getResource("assets/Test.kvc").getFile()));
+		config.load(this.getClass().getResourceAsStream("assets/Test.kvc"));
 		setBounds(1, 1, config.getWidth(), config.getHeight());
 		
 		renderPanel = new RenderPanel(this);

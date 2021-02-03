@@ -2,9 +2,9 @@ package com.github.silver_mixer.KeyVisualizer;
 
 import java.awt.Color;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +15,9 @@ public class KeyVisualizerConfig{
 	private int paddingTop = 0, paddingBottom = 0, paddingLeft = 0, paddingRight = 0;
 	private int width = 0, height = 0;
 	
-	public boolean load(File file) {
-		if(!file.exists())return false;
-		try(BufferedReader br = new BufferedReader(new FileReader(file))){
+	public boolean load(InputStream stream) {
+		if(stream == null)return false;
+		try(BufferedReader br = new BufferedReader(new InputStreamReader(stream))){
 			int lineWidth = 2, fontSize = 14;
 			int maxWidth = 0, maxHeight = 0;
 			String line;
