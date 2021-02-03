@@ -1,11 +1,15 @@
 package com.github.silver_mixer.KeyVisualizer;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Toolkit;
+import java.awt.image.BufferStrategy;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import javax.swing.JWindow;
+import javax.swing.SwingUtilities;
 
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -14,6 +18,9 @@ public class KeyVisualizer extends JWindow{
 	private static final long serialVersionUID = 1L;
 	private RenderPanel renderPanel;
 	private boolean isMouseEntered = false;
+	//Trasparent window patch
+	private static boolean enableTrasparentPatch = !System.getProperty("os.name").toLowerCase().matches(".*(windows|mac).*");
+	private static BufferStrategy bs;
 	
 	public static void main(String[] args) {
 		LogManager.getLogManager().reset();
@@ -48,6 +55,15 @@ public class KeyVisualizer extends JWindow{
 		KeyVisualizer window = new KeyVisualizer();
 		window.setVisible(true);
 		window.setLocation(0, 0);
+		if(enableTrasparentPatch) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					window.createBufferStrategy(2);
+					bs = window.getBufferStrategy();
+				}
+			});
+		}
 	}
 
 	public KeyVisualizer() {
@@ -77,10 +93,26 @@ public class KeyVisualizer extends JWindow{
 	
 	public void setMouseEntered(boolean entered) {
 		isMouseEntered = entered;
-		renderPanel.repaint();
+		render();
 	}
 	
 	public void render() {
-		renderPanel.repaint();
+		if(!enableTrasparentPatch) {
+			renderPanel.repaint();
+		}else {
+			try {
+				do {
+					do {
+						Graphics g = bs.getDrawGraphics();
+						paintComponents(g);
+						g.dispose();
+					}while(bs.contentsRestored());
+					bs.show();
+				}while(bs.contentsLost());
+				Toolkit.getDefaultToolkit().sync();
+			}catch(IllegalStateException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
