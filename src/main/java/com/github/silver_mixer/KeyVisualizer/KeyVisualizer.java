@@ -18,7 +18,7 @@ public class KeyVisualizer extends JWindow{
 	private static final long serialVersionUID = 1L;
 	private RenderPanel renderPanel;
 	private boolean isMouseEntered = false;
-	//Trasparent window patch
+	//Transparent window patch
 	private static boolean enableTrasparentPatch = !System.getProperty("os.name").toLowerCase().matches(".*(windows|mac).*");
 	private static BufferStrategy bs;
 	
