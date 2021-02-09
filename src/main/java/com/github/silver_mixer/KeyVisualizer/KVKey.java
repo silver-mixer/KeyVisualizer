@@ -87,7 +87,7 @@ public enum KVKey{
 	KV_SCROLL_LOCK,
 	
 	//Navigation Keys
-	KV_LFET,
+	KV_LEFT,
 	KV_UP,
 	KV_RIGHT,
 	KV_DOWN,
