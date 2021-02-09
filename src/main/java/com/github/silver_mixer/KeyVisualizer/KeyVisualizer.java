@@ -16,6 +16,7 @@ import org.jnativehook.NativeHookException;
 
 public class KeyVisualizer extends JWindow{
 	private static final long serialVersionUID = 1L;
+	private static boolean isDebug = false;
 	private RenderPanel renderPanel;
 	private boolean isMouseEntered = false;
 	//Transparent window patch
@@ -33,6 +34,12 @@ public class KeyVisualizer extends JWindow{
 		}catch(NativeHookException e) {
 			e.printStackTrace();
 			System.exit(1);
+		}
+		for(String arg: args) {
+			if(arg.equals("-debug")) {
+				isDebug = true;
+				System.out.println("Debug mode has been enabled.");
+			}
 		}
 		
 		Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -77,7 +84,7 @@ public class KeyVisualizer extends JWindow{
 		addMouseMotionListener(windowDragListener);
 		
 		KeyVisualizerConfig config = new KeyVisualizerConfig();
-		config.load(this.getClass().getResourceAsStream("assets/Test.kvc"));
+		config.load(this.getClass().getResourceAsStream("assets/Default.kvc"));
 		setBounds(1, 1, config.getWidth(), config.getHeight());
 		
 		renderPanel = new RenderPanel(this);
@@ -114,5 +121,20 @@ public class KeyVisualizer extends JWindow{
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public static String getOS() {
+		String os = System.getProperty("os.name").toLowerCase();
+		if(os.contains("windows")) {
+			return "windows";
+		}else if(os.contains("mac")) {
+			return "mac";
+		}else {
+			return "linux";
+		}
+	}
+	
+	public static boolean isDebug() {
+		return isDebug;
 	}
 }

@@ -8,30 +8,32 @@ import java.awt.Graphics2D;
 public class Circle extends Shape{
 	private int x, y, r;
 	
-	public Circle(String text, int x, int y, int r, Color fillColor, Color activeColor, int keyCode, int lineWidth, int fontSize) {
+	public Circle(String text, int x, int y, int r, Color fillColor, Color activeColor, KVKey key, int lineWidth, int fontSize) {
 		font = new Font(null, Font.PLAIN, fontSize);
-		this.text = text;
+		this.texts = text.split("\n");
 		this.x = x;
 		this.y = y;
 		this.r = r;
 		this.fillColor = fillColor;
 		this.activeColor = activeColor;
-		this.keyCode = keyCode;
+		this.activateKeys = NativeInputListener.getNativeKeyLayout(key);
 		this.lineWidth = lineWidth;
 	}
 
 	@Override
 	public void drawShape(Graphics2D g2d) {
-		if(NativeInputListener.isPressedKey(keyCode)) {
-			g2d.setColor(activeColor);
-		}else {
-			g2d.setColor(fillColor);
+		g2d.setColor(fillColor);
+		for(NativeKeyLayout k: activateKeys) {
+			if(NativeInputListener.isPressedKey(k)) {
+				g2d.setColor(activeColor);
+				break;
+			}
 		}
 		g2d.setStroke(new BasicStroke(lineWidth));
 		g2d.fillOval(x - r, y - r, r * 2, r * 2);
 		g2d.setColor(Color.BLACK);
 		g2d.drawOval(x - r, y - r, r * 2, r * 2);
 		g2d.setFont(font);
-		g2d.drawString(text, x - g2d.getFontMetrics().stringWidth(text) / 2, y + font.getSize() / 2);
+		drawString(g2d, texts, x, y);
 	}
 }

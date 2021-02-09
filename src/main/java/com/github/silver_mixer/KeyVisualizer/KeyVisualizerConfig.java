@@ -8,8 +8,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jnativehook.keyboard.NativeKeyEvent;
-
 public class KeyVisualizerConfig{
 	private List<Shape> shapes = new ArrayList<Shape>();
 	private int paddingTop = 0, paddingBottom = 0, paddingLeft = 0, paddingRight = 0;
@@ -21,15 +19,16 @@ public class KeyVisualizerConfig{
 			int lineWidth = 2, fontSize = 14;
 			int maxWidth = 0, maxHeight = 0;
 			String line;
+			NativeInputListener.initializeKeyMap(KeyVisualizer.getOS(), false);
 			while((line = br.readLine()) != null) {
 				if(line.isEmpty() || line.startsWith("#"))continue;
-				String[] op = line.split(";");
+				String[] op = getCommands(line);
 				if(op.length == 0)continue;
 				if(op[0].equals("RECT") && op.length >= 6) {
 					int x, y, w, h;
 					int fillR, fillG, fillB, fillA = 255;
 					int activeR, activeG, activeB, activeA = 255;
-					int keyCode;
+					KVKey key = null;
 					String[] args = op[2].split(",");
 					if(args.length < 4)continue;
 					x = Integer.parseInt(args[0]);
@@ -49,18 +48,16 @@ public class KeyVisualizerConfig{
 					activeB = Integer.parseInt(args[2]);
 					if(args.length >= 4)activeA = Integer.parseInt(args[3]);
 					try {
-						keyCode = NativeKeyEvent.class.getField("VC_" + op[5]).getInt(null);
-					}catch(NoSuchFieldException | IllegalAccessException e) {
-						continue;
-					}
-					shapes.add(new Rectangle(op[1], x + paddingLeft, y + paddingTop, w, h, new Color(fillR, fillG, fillB, fillA), new Color(activeR, activeG, activeB, activeA), keyCode, lineWidth, fontSize));
+						key = KVKey.valueOf("KV_" + op[5]);
+					}catch(IllegalArgumentException e) {}
+					shapes.add(new Rectangle(op[1], x + paddingLeft, y + paddingTop, w, h, new Color(fillR, fillG, fillB, fillA), new Color(activeR, activeG, activeB, activeA), key, lineWidth, fontSize));
 					if(maxWidth < x + w + paddingLeft)maxWidth = x + w + paddingLeft;
 					if(maxHeight < y + h + paddingTop)maxHeight = y + h + paddingTop;
 				}else if(op[0].equals("CIRCLE") && op.length >= 6) {
 					int x, y, r;
 					int fillR, fillG, fillB, fillA = 255;
 					int activeR, activeG, activeB, activeA = 255;
-					int keyCode;
+					KVKey key = null;
 					String[] args = op[2].split(",");
 					if(args.length < 3)continue;
 					x = Integer.parseInt(args[0]);
@@ -79,11 +76,9 @@ public class KeyVisualizerConfig{
 					activeB = Integer.parseInt(args[2]);
 					if(args.length >= 4)activeA = Integer.parseInt(args[3]);
 					try {
-						keyCode = NativeKeyEvent.class.getField("VC_" + op[5]).getInt(null);
-					}catch(NoSuchFieldException | IllegalAccessException e) {
-						continue;
-					}
-					shapes.add(new Circle(op[1], x + paddingLeft, y + paddingTop, r, new Color(fillR, fillG, fillB, fillA), new Color(activeR, activeG, activeB, activeA), keyCode, lineWidth, fontSize));
+						key = KVKey.valueOf("KV_" + op[5]);
+					}catch(IllegalArgumentException e) {}
+					shapes.add(new Circle(op[1], x + paddingLeft, y + paddingTop, r, new Color(fillR, fillG, fillB, fillA), new Color(activeR, activeG, activeB, activeA), key, lineWidth, fontSize));
 					if(maxWidth < x + r + paddingLeft)maxWidth = x + r + paddingLeft;
 					if(maxHeight < y + r + paddingTop)maxHeight = y + r + paddingTop;
 				}else if(op[0].equals("POLY") && op.length >= 6) {
@@ -91,7 +86,7 @@ public class KeyVisualizerConfig{
 					int maxx = 0, maxy = 0;
 					int fillR, fillG, fillB, fillA = 255;
 					int activeR, activeG, activeB, activeA = 255;
-					int keyCode;
+					KVKey key = null;
 					String[] args = op[2].split(",");
 					if(args.length < 4)continue;
 					xpoints = new int[args.length / 2];
@@ -115,11 +110,9 @@ public class KeyVisualizerConfig{
 					activeB = Integer.parseInt(args[2]);
 					if(args.length >= 4)activeA = Integer.parseInt(args[3]);
 					try {
-						keyCode = NativeKeyEvent.class.getField("VC_" + op[5]).getInt(null);
-					}catch(NoSuchFieldException | IllegalAccessException e) {
-						continue;
-					}
-					shapes.add(new Polygon(op[1], xpoints, ypoints, new Color(fillR, fillG, fillB, fillA), new Color(activeR, activeG, activeB, activeA), keyCode, lineWidth, fontSize));
+						key = KVKey.valueOf("KV_" + op[5]);
+					}catch(IllegalArgumentException e) {}
+					shapes.add(new Polygon(op[1], xpoints, ypoints, new Color(fillR, fillG, fillB, fillA), new Color(activeR, activeG, activeB, activeA), key, lineWidth, fontSize));
 					if(maxWidth < maxx)maxWidth = maxx;
 					if(maxHeight < maxy)maxHeight = maxy;
 				}else if(op[0].equals("LINEWIDTH") && op.length >= 1) {
@@ -133,6 +126,8 @@ public class KeyVisualizerConfig{
 					paddingBottom = Integer.parseInt(args[1]);
 					paddingLeft = Integer.parseInt(args[2]);
 					paddingRight = Integer.parseInt(args[3]);
+				}else if(op[0].equals("JPMODE")) {
+					NativeInputListener.initializeKeyMap(KeyVisualizer.getOS(), true);
 				}
 			}
 			width = maxWidth + paddingRight;
@@ -154,5 +149,30 @@ public class KeyVisualizerConfig{
 	
 	public int getHeight() {
 		return height;
+	}
+	
+	private String[] getCommands(String line) {
+		List<String> commands = new ArrayList<String>();
+		StringBuilder builder = new StringBuilder();
+		for(int i = 0; i < line.length(); i++) {
+			if(line.charAt(i) == '\\') {
+				i++;
+				if(line.length() == i)continue;
+				if(line.charAt(i) == '\\') {
+					builder.append('\\');
+				}else if(line.charAt(i) == ';') {
+					builder.append(';');
+				}else if(line.charAt(i) == 'n') {
+					builder.append('\n');
+				}
+			}else if(line.charAt(i) == ';'){
+				commands.add(builder.toString());
+				builder = new StringBuilder();
+			}else {
+				builder.append(line.charAt(i));
+			}
+		}
+		commands.add(builder.toString());
+		return commands.toArray(new String[commands.size()]);
 	}
 }
