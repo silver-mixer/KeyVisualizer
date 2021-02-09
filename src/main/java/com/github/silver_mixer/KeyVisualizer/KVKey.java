@@ -97,7 +97,7 @@ public enum KVKey{
 	KV_HOME,
 	KV_END,
 	KV_ESCAPE,
-	KV_MENU,
+	KV_CONTEXT_MENU,
 	
 	//Editing Keys
 	KV_ENTER,
