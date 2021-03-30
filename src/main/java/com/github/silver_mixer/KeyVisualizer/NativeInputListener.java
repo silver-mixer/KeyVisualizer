@@ -182,7 +182,7 @@ public class NativeInputListener implements NativeKeyListener, NativeMouseListen
 		if(!pressedKeys.contains(keyLayout)) {
 			pressedKeys.add(keyLayout);
 			if(KeyVisualizer.isDebug()) {
-				System.out.println("<" + Integer.toHexString(id) + ">kc=" + Integer.toHexString(event.getKeyCode()) + "/rc=" + Integer.toHexString(event.getRawCode()) + "/kl=" + event.getKeyLocation() + "/nkl=" + keyLayout.toString() + "/kt=" + NativeKeyEvent.getKeyText(event.getKeyCode()));
+				System.out.println("<p:" + Integer.toHexString(id) + ">kc=" + Integer.toHexString(event.getKeyCode()) + "/rc=" + Integer.toHexString(event.getRawCode()) + "/kl=" + event.getKeyLocation() + "/nkl=" + keyLayout.toString() + "/kt=" + NativeKeyEvent.getKeyText(event.getKeyCode()));
 			}
 			for(NativeInputListenerInterface listener: eventListeners.getListeners(NativeInputListenerInterface.class)) {
 				((NativeInputListenerInterface)listener).changeKeyState();
@@ -197,19 +197,29 @@ public class NativeInputListener implements NativeKeyListener, NativeMouseListen
 	public void nativeKeyReleased(NativeKeyEvent event) {
 		int id = (event.getKeyCode() != 0 ? event.getKeyCode() : event.getRawCode());
 		pressedKeys.remove(new NativeKeyLayout(id, event.getKeyLocation()));
+		if(KeyVisualizer.isDebug()) {
+			System.out.println("<r:" + Integer.toHexString(id) + ">kc=" + Integer.toHexString(event.getKeyCode()) + "/rc=" + Integer.toHexString(event.getRawCode()) + "/kl=" + event.getKeyLocation() + "/kt=" + NativeKeyEvent.getKeyText(event.getKeyCode()));
+		}
 		for(NativeInputListenerInterface listener: eventListeners.getListeners(NativeInputListenerInterface.class)) {
 			((NativeInputListenerInterface)listener).changeKeyState();
 		}
 	}
 	
 	@Override
-	public void nativeMousePressed(NativeMouseEvent event) {}
+	public void nativeMousePressed(NativeMouseEvent event) {
+		if(KeyVisualizer.isDebug()) {
+			System.out.println("<p>MB_" + event.getButton());
+		}
+	}
+	
+	@Override
+	public void nativeMouseReleased(NativeMouseEvent event) {
+		if(KeyVisualizer.isDebug()) {
+			System.out.println("<r>MB_" + event.getButton());
+		}}
 	
 	@Override
 	public void nativeMouseClicked(NativeMouseEvent event) {}
-	
-	@Override
-	public void nativeMouseReleased(NativeMouseEvent event) {}
 	
 	@Override
 	public void nativeMouseDragged(NativeMouseEvent event) {}
