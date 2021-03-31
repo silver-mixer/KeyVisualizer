@@ -5,4 +5,6 @@ import java.util.EventListener;
 public interface NativeInputListenerInterface extends EventListener{
 
 	public void changeKeyState();
+	
+	public void changeButtonState();
 }

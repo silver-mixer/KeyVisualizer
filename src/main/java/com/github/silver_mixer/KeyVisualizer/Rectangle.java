@@ -8,7 +8,7 @@ import java.awt.Graphics2D;
 public class Rectangle extends Shape{
 	private int startx, starty, width, height;
 	
-	public Rectangle(String text, int startx, int starty, int width, int height, Color fillColor, Color activeColor, KVKey key, int lineWidth, int fontSize) {
+	public Rectangle(String text, int startx, int starty, int width, int height, Color fillColor, Color activeColor, KVKey key, Integer[] buttons, int lineWidth, int fontSize) {
 		font = new Font(null, Font.PLAIN, fontSize);
 		this.texts = text.split("\n");
 		this.startx = startx;
@@ -18,6 +18,7 @@ public class Rectangle extends Shape{
 		this.fillColor = fillColor;
 		this.activeColor = activeColor;
 		this.activateKeys = NativeInputListener.getNativeKeyLayout(key);
+		this.activateButtons = buttons;
 		this.lineWidth = lineWidth;
 	}
 
@@ -26,6 +27,12 @@ public class Rectangle extends Shape{
 		g2d.setColor(fillColor);
 		for(NativeKeyLayout k: activateKeys) {
 			if(NativeInputListener.isPressedKey(k)) {
+				g2d.setColor(activeColor);
+				break;
+			}
+		}
+		for(int b: activateButtons) {
+			if(NativeInputListener.isPressedButton(b)) {
 				g2d.setColor(activeColor);
 				break;
 			}

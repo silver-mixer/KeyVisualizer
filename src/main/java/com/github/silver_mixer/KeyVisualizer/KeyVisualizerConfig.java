@@ -29,6 +29,7 @@ public class KeyVisualizerConfig{
 					int fillR, fillG, fillB, fillA = 255;
 					int activeR, activeG, activeB, activeA = 255;
 					KVKey key = null;
+					List<Integer> buttons = new ArrayList<Integer>();
 					String[] args = op[2].split(",");
 					if(args.length < 4)continue;
 					x = Integer.parseInt(args[0]);
@@ -50,7 +51,20 @@ public class KeyVisualizerConfig{
 					try {
 						key = KVKey.valueOf("KV_" + op[5]);
 					}catch(IllegalArgumentException e) {}
-					shapes.add(new Rectangle(op[1], x + paddingLeft, y + paddingTop, w, h, new Color(fillR, fillG, fillB, fillA), new Color(activeR, activeG, activeB, activeA), key, lineWidth, fontSize));
+					if(op[5].matches("(LMB|MMB|RMB|MB_[0-9]+)")) {
+						int button = 0;
+						if(op[5].equals("LMB")) {
+							button = 1;
+						}else if(op[5].equals("MMB")) {
+							button = 2;
+						}else if(op[5].equals("RMB")) {
+							button = 3;
+						}else {
+							button = Integer.parseInt(op[5].replaceAll("[^0-9]", ""));
+						}
+						buttons.add(button);
+					}
+					shapes.add(new Rectangle(op[1], x + paddingLeft, y + paddingTop, w, h, new Color(fillR, fillG, fillB, fillA), new Color(activeR, activeG, activeB, activeA), key, buttons.toArray(new Integer[buttons.size()]), lineWidth, fontSize));
 					if(maxWidth < x + w + paddingLeft)maxWidth = x + w + paddingLeft;
 					if(maxHeight < y + h + paddingTop)maxHeight = y + h + paddingTop;
 				}else if(op[0].equals("CIRCLE") && op.length >= 6) {
@@ -58,6 +72,7 @@ public class KeyVisualizerConfig{
 					int fillR, fillG, fillB, fillA = 255;
 					int activeR, activeG, activeB, activeA = 255;
 					KVKey key = null;
+					List<Integer> buttons = new ArrayList<Integer>();
 					String[] args = op[2].split(",");
 					if(args.length < 3)continue;
 					x = Integer.parseInt(args[0]);
@@ -78,7 +93,20 @@ public class KeyVisualizerConfig{
 					try {
 						key = KVKey.valueOf("KV_" + op[5]);
 					}catch(IllegalArgumentException e) {}
-					shapes.add(new Circle(op[1], x + paddingLeft, y + paddingTop, r, new Color(fillR, fillG, fillB, fillA), new Color(activeR, activeG, activeB, activeA), key, lineWidth, fontSize));
+					if(op[5].matches("(LMB|MMB|RMB|MB_[0-9]+)")) {
+						int button = 0;
+						if(op[5].equals("LMB")) {
+							button = 1;
+						}else if(op[5].equals("MMB")) {
+							button = 2;
+						}else if(op[5].equals("RMB")) {
+							button = 3;
+						}else {
+							button = Integer.parseInt(op[5].replaceAll("[^0-9]", ""));
+						}
+						buttons.add(button);
+					}
+					shapes.add(new Circle(op[1], x + paddingLeft, y + paddingTop, r, new Color(fillR, fillG, fillB, fillA), new Color(activeR, activeG, activeB, activeA), key, buttons.toArray(new Integer[buttons.size()]), lineWidth, fontSize));
 					if(maxWidth < x + r + paddingLeft)maxWidth = x + r + paddingLeft;
 					if(maxHeight < y + r + paddingTop)maxHeight = y + r + paddingTop;
 				}else if(op[0].equals("POLY") && op.length >= 6) {
@@ -87,6 +115,7 @@ public class KeyVisualizerConfig{
 					int fillR, fillG, fillB, fillA = 255;
 					int activeR, activeG, activeB, activeA = 255;
 					KVKey key = null;
+					List<Integer> buttons = new ArrayList<Integer>();
 					String[] args = op[2].split(",");
 					if(args.length < 4)continue;
 					xpoints = new int[args.length / 2];
@@ -112,7 +141,20 @@ public class KeyVisualizerConfig{
 					try {
 						key = KVKey.valueOf("KV_" + op[5]);
 					}catch(IllegalArgumentException e) {}
-					shapes.add(new Polygon(op[1], xpoints, ypoints, new Color(fillR, fillG, fillB, fillA), new Color(activeR, activeG, activeB, activeA), key, lineWidth, fontSize));
+					if(op[5].matches("(LMB|MMB|RMB|MB_[0-9]+)")) {
+						int button = 0;
+						if(op[5].equals("LMB")) {
+							button = 1;
+						}else if(op[5].equals("MMB")) {
+							button = 2;
+						}else if(op[5].equals("RMB")) {
+							button = 3;
+						}else {
+							button = Integer.parseInt(op[5].replaceAll("[^0-9]", ""));
+						}
+						buttons.add(button);
+					}
+					shapes.add(new Polygon(op[1], xpoints, ypoints, new Color(fillR, fillG, fillB, fillA), new Color(activeR, activeG, activeB, activeA), key, buttons.toArray(new Integer[buttons.size()]), lineWidth, fontSize));
 					if(maxWidth < maxx)maxWidth = maxx;
 					if(maxHeight < maxy)maxHeight = maxy;
 				}else if(op[0].equals("LINEWIDTH") && op.length >= 1) {

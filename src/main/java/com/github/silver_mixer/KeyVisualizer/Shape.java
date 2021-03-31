@@ -10,6 +10,7 @@ public class Shape{
 	protected Font font;
 	protected int lineWidth;
 	protected NativeKeyLayout[] activateKeys;
+	protected Integer[] activateButtons;
 	
 	public void drawShape(Graphics2D g2d) {}
 	

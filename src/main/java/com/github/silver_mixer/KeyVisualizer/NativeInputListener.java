@@ -16,6 +16,7 @@ import org.jnativehook.mouse.NativeMouseMotionListener;
 public class NativeInputListener implements NativeKeyListener, NativeMouseListener, NativeMouseMotionListener{
 	private static final NativeInputListener nativeInputListener = new NativeInputListener();
 	private static List<NativeKeyLayout> pressedKeys = new ArrayList<NativeKeyLayout>();
+	private static List<Integer> pressedButtons = new ArrayList<Integer>();
 	private static EventListenerList eventListeners = new EventListenerList();
 	private static Map<KVKey, NativeKeyLayout> keyMap = new HashMap<KVKey, NativeKeyLayout>();
 	
@@ -35,6 +36,10 @@ public class NativeInputListener implements NativeKeyListener, NativeMouseListen
 	
 	public static boolean isPressedKey(NativeKeyLayout keyLayout) {
 		return pressedKeys.contains(keyLayout);
+	}
+	
+	public static boolean isPressedButton(int button) {
+		return pressedButtons.contains(button);
 	}
 	
 	public static NativeKeyLayout[] getNativeKeyLayout(KVKey key) {
@@ -207,16 +212,25 @@ public class NativeInputListener implements NativeKeyListener, NativeMouseListen
 	
 	@Override
 	public void nativeMousePressed(NativeMouseEvent event) {
+		pressedButtons.add(event.getButton());
 		if(KeyVisualizer.isDebug()) {
 			System.out.println("<p>MB_" + event.getButton());
+		}
+		for(NativeInputListenerInterface listener: eventListeners.getListeners(NativeInputListenerInterface.class)) {
+			((NativeInputListenerInterface)listener).changeButtonState();
 		}
 	}
 	
 	@Override
 	public void nativeMouseReleased(NativeMouseEvent event) {
+		pressedButtons.remove((Integer)event.getButton());
 		if(KeyVisualizer.isDebug()) {
 			System.out.println("<r>MB_" + event.getButton());
-		}}
+		}
+		for(NativeInputListenerInterface listener: eventListeners.getListeners(NativeInputListenerInterface.class)) {
+			((NativeInputListenerInterface)listener).changeButtonState();
+		}
+	}
 	
 	@Override
 	public void nativeMouseClicked(NativeMouseEvent event) {}

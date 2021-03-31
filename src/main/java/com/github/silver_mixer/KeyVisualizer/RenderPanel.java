@@ -44,6 +44,11 @@ public class RenderPanel extends JPanel implements NativeInputListenerInterface{
 		window.render();
 	}
 	
+	@Override
+	public void changeButtonState() {
+		window.render();
+	}
+	
 	public void setShapes(List<Shape> shapes) {
 		this.shapes = shapes;
 	}
