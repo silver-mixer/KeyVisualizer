@@ -4,10 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
 import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 
@@ -35,10 +40,16 @@ public class KeyVisualizer extends JWindow{
 			e.printStackTrace();
 			System.exit(1);
 		}
-		for(String arg: args) {
-			if(arg.equals("-debug")) {
+		String kvcFile = "+Default.kvc";
+		for(int i = 0; i < args.length; i++) {
+			if(args[i].equals("-debug")) {
 				isDebug = true;
 				System.out.println("Debug mode has been enabled.");
+			}else if(args[i].equals("-config")) {
+				i++;
+				if(i != args.length) {
+					kvcFile = args[i];
+				}
 			}
 		}
 		
@@ -59,7 +70,7 @@ public class KeyVisualizer extends JWindow{
 		GlobalScreen.addNativeKeyListener(NativeInputListener.getInstance());
 		GlobalScreen.addNativeMouseListener(NativeInputListener.getInstance());
 		GlobalScreen.addNativeMouseMotionListener(NativeInputListener.getInstance());
-		KeyVisualizer window = new KeyVisualizer();
+		KeyVisualizer window = new KeyVisualizer(kvcFile);
 		window.setVisible(true);
 		window.setLocation(0, 0);
 		if(enableTrasparentPatch) {
@@ -73,7 +84,7 @@ public class KeyVisualizer extends JWindow{
 		}
 	}
 
-	public KeyVisualizer() {
+	public KeyVisualizer(String kvcFile) {
 		setAlwaysOnTop(true);
 		setBackground(new Color(255, 255, 255, 0));
 		setLayout(null);
@@ -84,7 +95,29 @@ public class KeyVisualizer extends JWindow{
 		addMouseMotionListener(windowDragListener);
 		
 		KeyVisualizerConfig config = new KeyVisualizerConfig();
-		config.load(this.getClass().getResourceAsStream("assets/Default.kvc"));
+		if(kvcFile.startsWith("+")) {
+			InputStream stream = this.getClass().getResourceAsStream("assets/" + kvcFile.substring(1));
+			if(stream == null) {
+				JOptionPane.showMessageDialog(null, "プリセットの読み込みに失敗しました。\nデフォルトプリセットを読み込みます。", "KeyVisualizer - 読み込みエラー", JOptionPane.ERROR_MESSAGE);
+				stream = this.getClass().getResourceAsStream("assets/Default.kvc");
+				if(stream == null) {
+					JOptionPane.showMessageDialog(null, "デフォルトプリセットの読み込みに失敗しました。", "KeyVisualizer - 起動エラー", JOptionPane.ERROR_MESSAGE);
+					System.exit(1);
+				}
+			}
+			config.load(stream);
+		}else {
+			try {
+				config.load(new FileInputStream(new File(kvcFile)));
+			}catch(FileNotFoundException e) {
+				JOptionPane.showMessageDialog(null, "指定されたパスにファイルがありません。\nデフォルトプリセットを読み込みます。\n\nパス: " + kvcFile, "KeyVisualizer - 読み込みエラー", JOptionPane.WARNING_MESSAGE);
+				InputStream stream = this.getClass().getResourceAsStream("assets/Default.kvc");
+				if(stream == null) {
+					JOptionPane.showMessageDialog(null, "デフォルトプリセットの読み込みに失敗しました。", "KeyVisualizer - 起動エラー", JOptionPane.ERROR_MESSAGE);
+					System.exit(1);
+				}
+			}
+		}
 		setBounds(1, 1, config.getWidth(), config.getHeight());
 		
 		renderPanel = new RenderPanel(this);
