@@ -8,7 +8,7 @@ import java.awt.Graphics2D;
 public class Circle extends Shape{
 	private int x, y, r;
 	
-	public Circle(String text, int x, int y, int r, Color fillColor, Color activeColor, KVKey key, Integer[] buttons, int lineWidth, int fontSize) {
+	public Circle(String text, int x, int y, int r, Color fillColor, Color activeColor, KVKey[] keys, Integer[] buttons, int lineWidth, int fontSize) {
 		font = new Font(null, Font.PLAIN, fontSize);
 		this.texts = text.split("\n");
 		this.x = x;
@@ -16,7 +16,7 @@ public class Circle extends Shape{
 		this.r = r;
 		this.fillColor = fillColor;
 		this.activeColor = activeColor;
-		this.activateKeys = NativeInputListener.getNativeKeyLayout(key);
+		this.activateKeys = NativeInputListener.getNativeKeyLayout(keys);
 		this.activateButtons = buttons;
 		this.lineWidth = lineWidth;
 	}

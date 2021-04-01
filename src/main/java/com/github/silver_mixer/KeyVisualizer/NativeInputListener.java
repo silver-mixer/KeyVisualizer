@@ -42,12 +42,14 @@ public class NativeInputListener implements NativeKeyListener, NativeMouseListen
 		return pressedButtons.contains(button);
 	}
 	
-	public static NativeKeyLayout[] getNativeKeyLayout(KVKey key) {
-		if(keyMap.containsKey(key)) {
-			return new NativeKeyLayout[] {keyMap.get(key)};
-		}else {
-			return new NativeKeyLayout[] {};
+	public static NativeKeyLayout[] getNativeKeyLayout(KVKey[] keys) {
+		List<NativeKeyLayout> keyLayouts = new ArrayList<NativeKeyLayout>();
+		for(KVKey key: keys) {
+			if(keyMap.containsKey(key)) {
+				keyLayouts.add(keyMap.get(key));
+			}
 		}
+		return keyLayouts.toArray(new NativeKeyLayout[keyLayouts.size()]);
 	}
 	
 	public static void initializeKeyMap(String os, boolean isJpKeyboard) {

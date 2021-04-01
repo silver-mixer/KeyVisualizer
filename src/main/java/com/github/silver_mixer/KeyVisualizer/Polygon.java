@@ -9,14 +9,14 @@ public class Polygon extends Shape{
 	private int[] xpoints, ypoints;
 	private int centerx, centery;
 	
-	public Polygon(String text, int[] xpoints, int[] ypoints, Color fillColor, Color activeColor, KVKey key, Integer[] buttons, int lineWidth, int fontSize) {
+	public Polygon(String text, int[] xpoints, int[] ypoints, Color fillColor, Color activeColor, KVKey[] keys, Integer[] buttons, int lineWidth, int fontSize) {
 		font = new Font(null, Font.PLAIN, fontSize);
 		this.texts = text.split("\n");
 		this.xpoints = xpoints;
 		this.ypoints = ypoints;
 		this.fillColor = fillColor;
 		this.activeColor = activeColor;
-		this.activateKeys = NativeInputListener.getNativeKeyLayout(key);
+		this.activateKeys = NativeInputListener.getNativeKeyLayout(keys);
 		this.activateButtons = buttons;
 		this.lineWidth = lineWidth;
 		int minx = xpoints[0], maxx = xpoints[0], miny = ypoints[0], maxy = ypoints[0];
