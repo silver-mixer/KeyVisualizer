@@ -152,7 +152,7 @@ MB_&lt;N&gt;のNは整数で指定します。マウスボタン4を指定する
 | DIVIDE | テンキー/ |
 | DECIMAL | テンキー. |
 | HANKAKU_ZENKAKU | 半角全角キー |
-| HANKAKU_ZENKAKU | カタカナひらがなキー |
+| KATAKANA_HIRAGANA | カタカナひらがなキー |
 | NON_CONVERSION | 無変換キー |
 | CONVERSION | 変換キー |
 
