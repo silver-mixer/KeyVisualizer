@@ -3,16 +3,23 @@
 kvcファイルは一行ずつ設定またはキーと対応付けられた図形を記述します。
 
 ## バージョン
-KVC Format v2.0
+KVC Format v2.1
 
 ## 命令一覧
+...で示されている箇所はカンマ(,)区切りで連続して書くことができます。  
+| **型** | **説明** |
+| --- | --- |
+| String | 文字列 |
+| Int | 整数 |
+| Color | カラー(下記参照) |
+| Key | キー(下記参照) |
 - 図形
     - 四角
-        - `RECT;text(:String);x(:Int),y(:Int),w(:Int),h(:Int);fillColor(:Color);activeColor(:Color);key(:Key)`
+        - `RECT;text(:String);x(:Int),y(:Int),w(:Int),h(:Int);fillColor(:Color);activeColor(:Color);key(:Key),...`
     - 円
-        - `CIRCLE;text(:String);x(:Int),y(:Int),r(:Int);fillColor(:Color);activeColor(:Color);key(:Key)`
+        - `CIRCLE;text(:String);x(:Int),y(:Int),r(:Int);fillColor(:Color);activeColor(:Color);key(:Key),...`
     - 多角形
-        - `POLY;text(:String);x1(:Int),y1(:Int),x2,y2,x3,y3,...;fillColor(:Color);activeColor(:Color);key(:Key)`
+        - `POLY;text(:String);x1(:Int),y1(:Int),x2,y2,x3,y3,...;fillColor(:Color);activeColor(:Color);key(:Key),...`
 - 描画設定
     - 線太さ
         - `LINEWIDTH;width(:Int)`
@@ -161,3 +168,4 @@ MB_&lt;N&gt;のNは整数で指定します。マウスボタン4を指定する
 | --- | --- |
 | v1.0 | 初版 |
 | v2.0 | マウスボタンを追加 |
+| v2.1 | 複数のキーの割り当てを追加 |
