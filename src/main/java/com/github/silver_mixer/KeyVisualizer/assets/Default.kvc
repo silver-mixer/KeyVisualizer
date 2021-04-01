@@ -1,5 +1,5 @@
 # デフォルトKeyVisualizerConfig(日本語配列キーボード用レイアウト)
-# KVC Format v1.0
+# KVC Format v2.1
 PADDING;8,8,8,8
 LINEWIDTH;1
 FONTSIZE;12
