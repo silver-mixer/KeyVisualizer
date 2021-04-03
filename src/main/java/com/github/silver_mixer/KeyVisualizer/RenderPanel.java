@@ -22,7 +22,7 @@ public class RenderPanel extends JPanel implements NativeInputListenerInterface{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D)g;
-		g2d.setBackground(new Color(0, 0, 255, 0));
+		g2d.setBackground(new Color(255, 255, 255, (KeyVisualizer.isSystemWindow() ? 255 : 0)));
 		g2d.clearRect(0, 0, getWidth(), getHeight());
 		g2d.setStroke(new BasicStroke(2));
 		if(window.isMouseEntered()) {

@@ -179,4 +179,8 @@ public class KeyVisualizer extends JFrame{
 	public static boolean isDebug() {
 		return isDebug;
 	}
+	
+	public static boolean isSystemWindow() {
+		return useSystemWindow;
+	}
 }
