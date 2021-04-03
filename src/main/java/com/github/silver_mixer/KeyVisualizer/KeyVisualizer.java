@@ -3,6 +3,7 @@ package com.github.silver_mixer.KeyVisualizer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,6 +32,7 @@ public class KeyVisualizer extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private static boolean isDebug = false, useSystemWindow = true;
 	private static String loadedKvcFile;
+	private static Insets frameInsets;
 	private RenderPanel renderPanel;
 	private boolean isMouseEntered = false;
 	//Transparent window patch
@@ -113,10 +115,28 @@ public class KeyVisualizer extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				useSystemWindow = !transparentModeItem.isSelected();
+				int x = frame.getX(), y = frame.getY();
+				if(!useSystemWindow) {
+					Insets insets = frame.getInsets();
+					x += insets.left;
+					y += insets.top;
+					if(frameInsets == null)frameInsets = insets;
+				}
 				frame.dispose();
 				JFrame.setDefaultLookAndFeelDecorated(!useSystemWindow);
 				KeyVisualizer window = new KeyVisualizer(loadedKvcFile);
 				window.setVisible(true);
+				if(useSystemWindow) {
+					Insets insets;
+					if(frameInsets == null) {
+						insets = window.getInsets();
+					}else {
+						insets = frameInsets;
+					}
+					x -= insets.left;
+					y -= insets.top;
+				}
+				window.setLocation(x, y);
 				if(enableTrasparentPatch) {
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
