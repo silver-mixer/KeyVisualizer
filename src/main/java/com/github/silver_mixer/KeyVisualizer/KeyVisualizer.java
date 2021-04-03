@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferStrategy;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,8 +17,11 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 
 import org.jnativehook.GlobalScreen;
@@ -23,6 +30,7 @@ import org.jnativehook.NativeHookException;
 public class KeyVisualizer extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private static boolean isDebug = false, useSystemWindow = true;
+	private static String loadedKvcFile;
 	private RenderPanel renderPanel;
 	private boolean isMouseEntered = false;
 	//Transparent window patch
@@ -87,6 +95,7 @@ public class KeyVisualizer extends JFrame{
 	}
 
 	public KeyVisualizer(String kvcFile) {
+		KeyVisualizer frame = this;
 		setTitle("Key Visualizer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setAlwaysOnTop(true);
@@ -97,6 +106,45 @@ public class KeyVisualizer extends JFrame{
 		WindowDragListener windowDragListener = new WindowDragListener(this);
 		addMouseListener(windowDragListener);
 		addMouseMotionListener(windowDragListener);
+		
+		JPopupMenu popupMenu = new JPopupMenu();
+		JCheckBoxMenuItem transparentModeItem = new JCheckBoxMenuItem("透過モード", !useSystemWindow);
+		transparentModeItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				useSystemWindow = !transparentModeItem.isSelected();
+				frame.dispose();
+				JFrame.setDefaultLookAndFeelDecorated(!useSystemWindow);
+				KeyVisualizer window = new KeyVisualizer(loadedKvcFile);
+				window.setVisible(true);
+				if(enableTrasparentPatch) {
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							window.createBufferStrategy(2);
+							bs = window.getBufferStrategy();
+						}
+					});
+				}
+			}
+		});
+		popupMenu.add(transparentModeItem);
+		
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if(e.isPopupTrigger()) {
+					popupMenu.show(e.getComponent(), e.getX(), e.getY());
+				}
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if(e.isPopupTrigger()) {
+					popupMenu.show(e.getComponent(), e.getX(), e.getY());
+				}
+			}
+		});
 		
 		KeyVisualizerConfig config = new KeyVisualizerConfig();
 		if(kvcFile.startsWith("+")) {
@@ -122,11 +170,14 @@ public class KeyVisualizer extends JFrame{
 				}
 			}
 		}
+		loadedKvcFile = kvcFile;
+		
 		if(useSystemWindow) {
 			getContentPane().setPreferredSize(new Dimension(config.getWidth(), config.getHeight()));
 			pack();
 		}else {
-			setBounds(1, 1, config.getWidth(), config.getHeight());
+			getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+			setSize(config.getWidth(), config.getHeight());
 		}
 		
 		renderPanel = new RenderPanel(this);
