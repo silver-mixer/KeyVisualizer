@@ -15,7 +15,7 @@ public class KeyVisualizerConfig{
 	
 	public boolean load(InputStream stream) {
 		if(stream == null)return false;
-		try(BufferedReader br = new BufferedReader(new InputStreamReader(stream))){
+		try(BufferedReader br = new BufferedReader(new InputStreamReader(stream, "UTF-8"))){
 			int lineWidth = 2, fontSize = 14;
 			int maxWidth = 0, maxHeight = 0;
 			String line;
