@@ -1,6 +1,7 @@
 package com.github.silver_mixer.KeyVisualizer;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
@@ -12,16 +13,16 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 
-public class KeyVisualizer extends JWindow{
+public class KeyVisualizer extends JFrame{
 	private static final long serialVersionUID = 1L;
-	private static boolean isDebug = false;
+	private static boolean isDebug = false, useSystemWindow = true;
 	private RenderPanel renderPanel;
 	private boolean isMouseEntered = false;
 	//Transparent window patch
@@ -70,6 +71,7 @@ public class KeyVisualizer extends JWindow{
 		GlobalScreen.addNativeKeyListener(NativeInputListener.getInstance());
 		GlobalScreen.addNativeMouseListener(NativeInputListener.getInstance());
 		GlobalScreen.addNativeMouseMotionListener(NativeInputListener.getInstance());
+		JFrame.setDefaultLookAndFeelDecorated(!useSystemWindow);
 		KeyVisualizer window = new KeyVisualizer(kvcFile);
 		window.setVisible(true);
 		window.setLocation(0, 0);
@@ -85,8 +87,10 @@ public class KeyVisualizer extends JWindow{
 	}
 
 	public KeyVisualizer(String kvcFile) {
+		setTitle("Key Visualizer");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setAlwaysOnTop(true);
-		setBackground(new Color(255, 255, 255, 0));
+		setBackground(new Color(255, 255, 255, (useSystemWindow ? 255 : 0)));
 		setLayout(null);
 		setBounds(1, 1, 640, 480);
 		
@@ -118,7 +122,12 @@ public class KeyVisualizer extends JWindow{
 				}
 			}
 		}
-		setBounds(1, 1, config.getWidth(), config.getHeight());
+		if(useSystemWindow) {
+			getContentPane().setPreferredSize(new Dimension(config.getWidth(), config.getHeight()));
+			pack();
+		}else {
+			setBounds(1, 1, config.getWidth(), config.getHeight());
+		}
 		
 		renderPanel = new RenderPanel(this);
 		renderPanel.setBounds(0, 0, config.getWidth(), config.getHeight());
