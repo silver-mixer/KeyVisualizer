@@ -37,6 +37,7 @@ public class KeyVisualizer extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private static boolean isDebug = false, useSystemWindow = true;
 	private static String loadedKvcFile;
+	private static File lastOpenDirectory = null;
 	private static Insets frameInsets;
 	private RenderPanel renderPanel;
 	private boolean isMouseEntered = false;
@@ -177,9 +178,11 @@ public class KeyVisualizer extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				JFileChooser fileChooser = new JFileChooser();
+				if(lastOpenDirectory != null)fileChooser.setCurrentDirectory(lastOpenDirectory);
 				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("KVCファイル", "kvc"));
 				fileChooser.setAcceptAllFileFilterUsed(true);
 				if(fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
+					lastOpenDirectory = fileChooser.getSelectedFile().getParentFile();
 					loadKVCFile(fileChooser.getSelectedFile().getAbsolutePath());
 				}
 			}
