@@ -258,6 +258,7 @@ public class KeyVisualizer extends JFrame{
 			InputStream stream = this.getClass().getResourceAsStream("assets/" + kvcFile.substring(1));
 			if(stream == null) {
 				JOptionPane.showMessageDialog(null, "プリセットの読み込みに失敗しました。\nデフォルトプリセットを読み込みます。", "KeyVisualizer - 読み込みエラー", JOptionPane.ERROR_MESSAGE);
+				kvcFile = "+Default.kvc";
 				stream = this.getClass().getResourceAsStream("assets/Default.kvc");
 				if(stream == null) {
 					JOptionPane.showMessageDialog(null, "デフォルトプリセットの読み込みに失敗しました。", "KeyVisualizer - 起動エラー", JOptionPane.ERROR_MESSAGE);
@@ -270,11 +271,13 @@ public class KeyVisualizer extends JFrame{
 				config.load(new FileInputStream(new File(kvcFile)));
 			}catch(FileNotFoundException e) {
 				JOptionPane.showMessageDialog(null, "指定されたパスにファイルがありません。\nデフォルトプリセットを読み込みます。\n\nパス: " + kvcFile, "KeyVisualizer - 読み込みエラー", JOptionPane.WARNING_MESSAGE);
+				kvcFile = "+Default.kvc";
 				InputStream stream = this.getClass().getResourceAsStream("assets/Default.kvc");
 				if(stream == null) {
 					JOptionPane.showMessageDialog(null, "デフォルトプリセットの読み込みに失敗しました。", "KeyVisualizer - 起動エラー", JOptionPane.ERROR_MESSAGE);
 					System.exit(1);
 				}
+				config.load(stream);
 			}
 		}
 		loadedKvcFile = kvcFile;
