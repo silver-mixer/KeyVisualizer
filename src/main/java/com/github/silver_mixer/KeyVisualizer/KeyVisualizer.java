@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -150,6 +151,25 @@ public class KeyVisualizer extends JFrame{
 			}
 		});
 		
+		JMenu presetsMenu = new JMenu("プリセット");
+		JMenuItem defaultPresetItem = new JMenuItem("キーボード(デフォルト)");
+		defaultPresetItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				loadKVCFile("+Default.kvc");
+			}
+		});
+		JMenuItem mousePresetItem = new JMenuItem("マウス");
+		mousePresetItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				loadKVCFile("+Mouse.kvc");
+			}
+		});
+		
+		presetsMenu.add(defaultPresetItem);
+		presetsMenu.add(mousePresetItem);
+		
 		JMenuItem exitItem = new JMenuItem("終了");
 		exitItem.addActionListener(new ActionListener() {
 			@Override
@@ -159,6 +179,7 @@ public class KeyVisualizer extends JFrame{
 		});
 		
 		popupMenu.add(transparentModeItem);
+		popupMenu.add(presetsMenu);
 		popupMenu.add(new JSeparator());
 		popupMenu.add(exitItem);
 		
@@ -178,6 +199,43 @@ public class KeyVisualizer extends JFrame{
 			}
 		});
 		
+		renderPanel = new RenderPanel(this);
+		loadKVCFile(kvcFile);
+		
+		NativeInputListener.addListener(renderPanel);
+		add(renderPanel);
+	}
+	
+	public boolean isMouseEntered() {
+		return isMouseEntered;
+	}
+	
+	public void setMouseEntered(boolean entered) {
+		isMouseEntered = entered;
+		render();
+	}
+	
+	public void render() {
+		if(!enableTrasparentPatch) {
+			renderPanel.repaint();
+		}else {
+			try {
+				do {
+					do {
+						Graphics g = bs.getDrawGraphics();
+						paintComponents(g);
+						g.dispose();
+					}while(bs.contentsRestored());
+					bs.show();
+				}while(bs.contentsLost());
+				Toolkit.getDefaultToolkit().sync();
+			}catch(IllegalStateException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void loadKVCFile(String kvcFile) {
 		KeyVisualizerConfig config = new KeyVisualizerConfig();
 		if(kvcFile.startsWith("+")) {
 			InputStream stream = this.getClass().getResourceAsStream("assets/" + kvcFile.substring(1));
@@ -211,41 +269,8 @@ public class KeyVisualizer extends JFrame{
 			getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 			setSize(config.getWidth(), config.getHeight());
 		}
-		
-		renderPanel = new RenderPanel(this);
 		renderPanel.setBounds(0, 0, config.getWidth(), config.getHeight());
 		renderPanel.setShapes(config.getShapes());
-		NativeInputListener.addListener(renderPanel);
-		add(renderPanel);
-	}
-	
-	public boolean isMouseEntered() {
-		return isMouseEntered;
-	}
-	
-	public void setMouseEntered(boolean entered) {
-		isMouseEntered = entered;
-		render();
-	}
-	
-	public void render() {
-		if(!enableTrasparentPatch) {
-			renderPanel.repaint();
-		}else {
-			try {
-				do {
-					do {
-						Graphics g = bs.getDrawGraphics();
-						paintComponents(g);
-						g.dispose();
-					}while(bs.contentsRestored());
-					bs.show();
-				}while(bs.contentsLost());
-				Toolkit.getDefaultToolkit().sync();
-			}catch(IllegalStateException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 	
 	public static String getOS() {
