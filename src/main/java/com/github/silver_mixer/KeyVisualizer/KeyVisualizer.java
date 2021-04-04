@@ -20,9 +20,11 @@ import java.util.logging.Logger;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
+import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
 import org.jnativehook.GlobalScreen;
@@ -147,7 +149,18 @@ public class KeyVisualizer extends JFrame{
 				}
 			}
 		});
+		
+		JMenuItem exitItem = new JMenuItem("終了");
+		exitItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				System.exit(0);
+			}
+		});
+		
 		popupMenu.add(transparentModeItem);
+		popupMenu.add(new JSeparator());
+		popupMenu.add(exitItem);
 		
 		addMouseListener(new MouseAdapter() {
 			@Override
