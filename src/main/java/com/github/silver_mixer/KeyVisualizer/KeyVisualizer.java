@@ -19,6 +19,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -27,6 +28,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -170,6 +172,19 @@ public class KeyVisualizer extends JFrame{
 		presetsMenu.add(defaultPresetItem);
 		presetsMenu.add(mousePresetItem);
 		
+		JMenuItem loadKVCItem = new JMenuItem("ファイルを開く");
+		loadKVCItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("KVCファイル", "kvc"));
+				fileChooser.setAcceptAllFileFilterUsed(true);
+				if(fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
+					loadKVCFile(fileChooser.getSelectedFile().getAbsolutePath());
+				}
+			}
+		});
+		
 		JMenuItem exitItem = new JMenuItem("終了");
 		exitItem.addActionListener(new ActionListener() {
 			@Override
@@ -179,7 +194,9 @@ public class KeyVisualizer extends JFrame{
 		});
 		
 		popupMenu.add(transparentModeItem);
+		popupMenu.add(new JSeparator());
 		popupMenu.add(presetsMenu);
+		popupMenu.add(loadKVCItem);
 		popupMenu.add(new JSeparator());
 		popupMenu.add(exitItem);
 		
