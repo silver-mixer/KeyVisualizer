@@ -84,7 +84,6 @@ public class KeyVisualizer extends JFrame{
 		JFrame.setDefaultLookAndFeelDecorated(!useSystemWindow);
 		KeyVisualizer window = new KeyVisualizer(kvcFile);
 		window.setVisible(true);
-		window.setLocation(0, 0);
 		if(enableTrasparentPatch) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
@@ -103,7 +102,7 @@ public class KeyVisualizer extends JFrame{
 		setAlwaysOnTop(true);
 		setBackground(new Color(255, 255, 255, (useSystemWindow ? 255 : 0)));
 		setLayout(null);
-		setBounds(1, 1, 640, 480);
+		setBounds(0, 0, 640, 480);
 		
 		WindowDragListener windowDragListener = new WindowDragListener(this);
 		addMouseListener(windowDragListener);
