@@ -219,6 +219,8 @@ public class NativeInputListener implements NativeKeyListener, NativeMouseListen
 	public void nativeKeyPressed(NativeKeyEvent event) {
 		boolean isRawCode = (event.getKeyCode() == 0);
 		int keyCode = (isRawCode ? event.getRawCode() : event.getKeyCode());
+		//Windows HANKAKU_ZENKAKU patch
+		if(isRawCode && keyCode == 0x00f4)keyCode = 0x00f3;
 		NativeKeyLayout keyLayout = new NativeKeyLayout(new KeyContainer(keyCode, isRawCode), event.getKeyLocation());
 		if(!pressedKeys.contains(keyLayout)) {
 			pressedKeys.add(keyLayout);
@@ -238,6 +240,8 @@ public class NativeInputListener implements NativeKeyListener, NativeMouseListen
 	public void nativeKeyReleased(NativeKeyEvent event) {
 		boolean isRawCode = (event.getKeyCode() == 0);
 		int keyCode = (isRawCode ? event.getRawCode() : event.getKeyCode());
+		//Windows HANKAKU_ZENKAKU patch
+		if(isRawCode && keyCode == 0x00f4)keyCode = 0x00f3;
 		NativeKeyLayout keyLayout = new NativeKeyLayout(new KeyContainer(keyCode, isRawCode), event.getKeyLocation());
 		pressedKeys.remove(keyLayout);
 		if(KeyVisualizer.isDebug()) {
