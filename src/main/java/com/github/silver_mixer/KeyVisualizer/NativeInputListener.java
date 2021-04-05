@@ -122,10 +122,6 @@ public class NativeInputListener implements NativeKeyListener, NativeMouseListen
 		keyMap.put(KVKey.KV_CAPS_LOCK, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_CAPS_LOCK, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
 		keyMap.put(KVKey.KV_SCROLL_LOCK, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_SCROLL_LOCK, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
 		//Navigation Keys
-		keyMap.put(KVKey.KV_PAGE_UP, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_PAGE_UP, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
-		keyMap.put(KVKey.KV_PAGE_DOWN, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_PAGE_DOWN, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
-		keyMap.put(KVKey.KV_HOME, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_HOME, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
-		keyMap.put(KVKey.KV_END, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_END, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
 		keyMap.put(KVKey.KV_ESCAPE, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_ESCAPE, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
 		keyMap.put(KVKey.KV_CONTEXT_MENU, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_CONTEXT_MENU, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
 		//Editing Keys
@@ -166,6 +162,10 @@ public class NativeInputListener implements NativeKeyListener, NativeMouseListen
 				keyMap.put(KVKey.KV_UP, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_UP, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
 				keyMap.put(KVKey.KV_RIGHT, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_RIGHT, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
 				keyMap.put(KVKey.KV_DOWN, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_DOWN, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
+				keyMap.put(KVKey.KV_PAGE_UP, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_PAGE_UP, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
+				keyMap.put(KVKey.KV_PAGE_DOWN, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_PAGE_DOWN, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
+				keyMap.put(KVKey.KV_HOME, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_HOME, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
+				keyMap.put(KVKey.KV_END, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_END, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
 				//Editing Keys
 				keyMap.put(KVKey.KV_INSERT, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_INSERT, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
 				keyMap.put(KVKey.KV_DELETE, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_DELETE, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
@@ -188,20 +188,24 @@ public class NativeInputListener implements NativeKeyListener, NativeMouseListen
 				keyMap.put(KVKey.KV_SEMICOLON, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_EQUALS, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
 				keyMap.put(KVKey.KV_OPEN_BRACKET, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_OPEN_BRACKET, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
 				keyMap.put(KVKey.KV_CLOSE_BRACKET, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_CLOSE_BRACKET, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
-				keyMap.put(KVKey.KV_BACK_SLASH, new NativeKeyLayout(new KeyContainer(0x00e2, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
+				keyMap.put(KVKey.KV_BACK_SLASH, new NativeKeyLayout(new KeyContainer(0x00e2, true), NativeKeyEvent.KEY_LOCATION_STANDARD));
 				//Navigation Keys
 				keyMap.put(KVKey.KV_LEFT, new NativeKeyLayout(new KeyContainer(0xe04b, false), NativeKeyEvent.KEY_LOCATION_NUMPAD));
 				keyMap.put(KVKey.KV_UP, new NativeKeyLayout(new KeyContainer(0xe048, false), NativeKeyEvent.KEY_LOCATION_NUMPAD));
 				keyMap.put(KVKey.KV_RIGHT, new NativeKeyLayout(new KeyContainer(0xe04d, false), NativeKeyEvent.KEY_LOCATION_NUMPAD));
 				keyMap.put(KVKey.KV_DOWN, new NativeKeyLayout(new KeyContainer(0xe050, false), NativeKeyEvent.KEY_LOCATION_NUMPAD));
+				keyMap.put(KVKey.KV_PAGE_UP, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_PAGE_UP, false), NativeKeyEvent.KEY_LOCATION_NUMPAD));
+				keyMap.put(KVKey.KV_PAGE_DOWN, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_PAGE_DOWN, false), NativeKeyEvent.KEY_LOCATION_NUMPAD));
+				keyMap.put(KVKey.KV_HOME, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_HOME, false), NativeKeyEvent.KEY_LOCATION_NUMPAD));
+				keyMap.put(KVKey.KV_END, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_END, false), NativeKeyEvent.KEY_LOCATION_NUMPAD));
 				//Editing Keys
 				keyMap.put(KVKey.KV_INSERT, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_INSERT, false), NativeKeyEvent.KEY_LOCATION_NUMPAD));
 				keyMap.put(KVKey.KV_DELETE, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_DELETE, false), NativeKeyEvent.KEY_LOCATION_NUMPAD));
 				//Japanese Keys
-				keyMap.put(KVKey.KV_HANKAKU_ZENKAKU, new NativeKeyLayout(new KeyContainer(0x00f4, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
+				keyMap.put(KVKey.KV_HANKAKU_ZENKAKU, new NativeKeyLayout(new KeyContainer(0x00f4, true), NativeKeyEvent.KEY_LOCATION_STANDARD));
 				keyMap.put(KVKey.KV_KATAKANA_HIRAGANA, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_HIRAGANA, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
-				keyMap.put(KVKey.KV_NON_CONVERSION, new NativeKeyLayout(new KeyContainer(0x001d, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
-				keyMap.put(KVKey.KV_CONVERSION, new NativeKeyLayout(new KeyContainer(0x001c, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
+				keyMap.put(KVKey.KV_NON_CONVERSION, new NativeKeyLayout(new KeyContainer(0x001d, true), NativeKeyEvent.KEY_LOCATION_STANDARD));
+				keyMap.put(KVKey.KV_CONVERSION, new NativeKeyLayout(new KeyContainer(0x001c, true), NativeKeyEvent.KEY_LOCATION_STANDARD));
 				//Japanese Extended Keys
 				keyMap.put(KVKey.KV_CIRCUMFLEX, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_QUOTE, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
 				keyMap.put(KVKey.KV_YEN, new NativeKeyLayout(new KeyContainer(NativeKeyEvent.VC_BACK_SLASH, false), NativeKeyEvent.KEY_LOCATION_STANDARD));
