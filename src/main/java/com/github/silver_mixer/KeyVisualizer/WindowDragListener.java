@@ -1,13 +1,12 @@
 package com.github.silver_mixer.KeyVisualizer;
 
-import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 public class WindowDragListener implements MouseListener, MouseMotionListener{
 	private KeyVisualizer window;
-	private int clickX, clickY;
+	private int clickX, clickY, windowX, windowY;
 	
 	public WindowDragListener(KeyVisualizer window) {
 		this.window = window;
@@ -17,6 +16,8 @@ public class WindowDragListener implements MouseListener, MouseMotionListener{
 	public void mousePressed(MouseEvent event) {
 		clickX = event.getXOnScreen();
 		clickY = event.getYOnScreen();
+		windowX = window.getLocation().x;
+		windowY = window.getLocation().y;
 	}
 	
 	@Override
@@ -42,10 +43,7 @@ public class WindowDragListener implements MouseListener, MouseMotionListener{
 	
 	@Override
 	public void mouseDragged(MouseEvent event) {
-		int clickCurrentX = event.getXOnScreen(), clickCurrentY = event.getYOnScreen();
-		Point currentPosition = window.getLocation();
-		window.setLocation(currentPosition.x + (clickCurrentX - clickX), currentPosition.y + (clickCurrentY - clickY));
-		clickX = clickCurrentX;
-		clickY = clickCurrentY;
+		int deltaX = event.getXOnScreen() - clickX, deltaY = event.getYOnScreen() - clickY;
+		window.setLocation(windowX + deltaX, windowY + deltaY);
 	}
 }
